@@ -470,7 +470,10 @@ def get_movie_by_id(movie_id):
     # 4. Convert to dictionary
     # 5. Close the session
     # 6. Return the result
-    pass
+
+    # DEFAULT: Returns None (movie detail page will show error)
+    # Complete this challenge to make movie pages work!
+    return None
 
 
 # ============================================================================
@@ -540,6 +543,9 @@ def add_review(movie_id, review):
     # 3. Add it to the session
     # 4. Commit the changes
     # 5. Close the session
+
+    # DEFAULT: Does nothing (reviews won't be saved)
+    # Complete this challenge to save reviews!
     pass
 
 
