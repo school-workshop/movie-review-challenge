@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CineRate - Movie Reviews{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Graphik:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <!-- Accenture Logo -->
+                <svg class="accenture-logo" viewBox="0 0 118 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16.48 0L0 36h7.68L21.12 7.2 34.56 36h7.68L25.76 0H16.48z" fill="#A100FF"/>
+                    <path d="M51.84 10.08c-6.72 0-11.04 4.8-11.04 11.04 0 6.24 4.32 11.04 11.04 11.04 4.32 0 7.68-2.16 9.6-5.28l-5.28-2.88c-1.2 1.68-2.64 2.64-4.32 2.64-3.12 0-5.28-2.4-5.28-5.52s2.16-5.52 5.28-5.52c1.68 0 3.12.96 4.32 2.64l5.28-2.88c-1.92-3.12-5.28-5.28-9.6-5.28z" fill="#A100FF"/>
+                    <path d="M75.36 10.08c-6.72 0-11.04 4.8-11.04 11.04 0 6.24 4.32 11.04 11.04 11.04 4.32 0 7.68-2.16 9.6-5.28l-5.28-2.88c-1.2 1.68-2.64 2.64-4.32 2.64-3.12 0-5.28-2.4-5.28-5.52s2.16-5.52 5.28-5.52c1.68 0 3.12.96 4.32 2.64l5.28-2.88c-1.92-3.12-5.28-5.28-9.6-5.28z" fill="#A100FF"/>
+                    <path d="M98.88 10.56h-5.76v21.12h5.76V10.56zM96 0c-2.16 0-3.84 1.68-3.84 3.84S93.84 7.68 96 7.68s3.84-1.68 3.84-3.84S98.16 0 96 0z" fill="#A100FF"/>
+                    <path d="M118 10.56h-5.76v21.12H118V10.56zM115.12 0c-2.16 0-3.84 1.68-3.84 3.84s1.68 3.84 3.84 3.84 3.84-1.68 3.84-3.84S117.28 0 115.12 0z" fill="#A100FF"/>
+                </svg>
+                <span class="logo-divider">|</span>
+                <span class="logo-text">CineRate</span>
+            </a>
+            <form action="/search" method="GET" class="search-form">
+                <div class="search-wrapper">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" name="q" placeholder="Search movies..." value="{{ search_query or '' }}" autocomplete="off">
+                </div>
+                <button type="submit" class="search-btn">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <svg class="footer-logo" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16.48 0L0 36h7.68L21.12 7.2 34.56 36h7.68L25.76 0H16.48z" fill="#A100FF"/>
+                </svg>
+                <span>Accenture Workshop 2025</span>
+            </div>
+            <p class="footer-text">Built with passion by BTEC Students</p>
+            <div class="footer-links">
+                <a href="https://www.accenture.com" target="_blank">Accenture</a>
+                <span class="footer-dot"></span>
+                <a href="https://github.com" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

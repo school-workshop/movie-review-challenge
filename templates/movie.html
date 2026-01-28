@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}{{ movie.title }} - CineRate{% endblock %}
+
+{% block content %}
+<div class="container">
+    <a href="/" class="back-link">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to all movies
+    </a>
+
+    <div class="movie-detail">
+        <!-- Movie Header -->
+        <div class="movie-detail-header">
+            <img src="{{ movie.poster }}" alt="{{ movie.title }}" class="detail-poster">
+            <div class="detail-info">
+                <h1>{{ movie.title }}</h1>
+                <div class="detail-meta">
+                    <span class="year">{{ movie.year }}</span>
+                    <span class="genre">{{ movie.genre }}</span>
+                </div>
+                <div class="detail-rating">
+                    {% if avg_rating > 0 %}
+                        <span class="stars">★</span>
+                        <span class="rating-value">{{ avg_rating }}</span>
+                        <span class="review-count">({{ movie.reviews|length }} review{% if movie.reviews|length != 1 %}s{% endif %})</span>
+                    {% else %}
+                        <span class="no-rating">No reviews yet - be the first!</span>
+                    {% endif %}
+                </div>
+                <p class="plot">{{ movie.plot }}</p>
+            </div>
+        </div>
+
+        <!-- Review Form -->
+        <section class="review-section">
+            <h2>Write a Review</h2>
+            <form action="/movie/{{ movie.id }}/review" method="POST" class="review-form">
+                <div class="form-group">
+                    <label for="reviewer_name">Your Name</label>
+                    <input type="text" id="reviewer_name" name="reviewer_name" required placeholder="Enter your name">
+                </div>
+
+                <div class="form-group">
+                    <label for="rating">Rating</label>
+                    <select id="rating" name="rating" required>
+                        <option value="">Select your rating...</option>
+                        <option value="5">★★★★★ Excellent (5 stars)</option>
+                        <option value="4">★★★★☆ Great (4 stars)</option>
+                        <option value="3">★★★☆☆ Good (3 stars)</option>
+                        <option value="2">★★☆☆☆ Fair (2 stars)</option>
+                        <option value="1">★☆☆☆☆ Poor (1 star)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="comment">Your Review</label>
+                    <textarea id="comment" name="comment" required placeholder="What did you think of this movie? Share your thoughts..." rows="4"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Review</button>
+            </form>
+        </section>
+
+        <!-- Existing Reviews -->
+        <section class="reviews-list">
+            <h2>Reviews</h2>
+            {% if movie.reviews %}
+                {% for review in movie.reviews %}
+                <article class="review-card">
+                    <div class="review-header">
+                        <span class="reviewer-name">{{ review.name }}</span>
+                        <span class="review-rating">
+                            {% for i in range(review.rating) %}★{% endfor %}{% for i in range(5 - review.rating) %}☆{% endfor %}
+                        </span>
+                    </div>
+                    <p class="review-comment">{{ review.comment }}</p>
+                    {% if review.created_at %}
+                    <p class="review-date">Reviewed on {{ review.created_at }}</p>
+                    {% endif %}
+                </article>
+                {% endfor %}
+            {% else %}
+                <p class="no-reviews">No reviews yet. Be the first to share your thoughts on this movie!</p>
+            {% endif %}
+        </section>
+    </div>
+</div>
+{% endblock %}
