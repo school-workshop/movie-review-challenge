@@ -87,6 +87,7 @@ Your app will be live at `https://your-app-name.onrender.com`!
 ## Need Help?
 
 - Check the hints in `STUDENT_CHALLENGES.md`
+- New to Git? Read our **[GIT_GUIDE.md](GIT_GUIDE.md)** for beginners
 - Ask a mentor for guidance
 - Look at the example code in `load_movies()` function
 
