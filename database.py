@@ -436,15 +436,6 @@ def get_movie_by_id(movie_id):
     This queries the Movie table, filters where id matches, and gets the first result.
     .first() returns None if no movie is found.
 
-    STEP-BY-STEP HINTS:
-    -------------------
-    1. Create a session: session = get_session()
-    2. Query the movie:
-       movie = session.query(Movie).filter(Movie.id == movie_id).first()
-    3. Check if movie exists: if movie is None: return None
-    4. Convert to dictionary: result = movie.to_dict()
-    5. Close session: session.close()
-    6. Return the result
 
     IMPORTANT: Use try/finally to ensure session is closed!
 
@@ -462,14 +453,21 @@ def get_movie_by_id(movie_id):
     movie = get_movie_by_id(999)
     # Returns: None (movie doesn't exist)
     """
+
+    session = get_session()
+    try:
+        movie = session.query(Movie).filter(Movie.id == movie_id).first()
+
+
     # TODO: Write your code here!
     # Remember:
-    # 1. Create a session
-    # 2. Query the movie using filter
-    # 3. Check if movie is None
-    # 4. Convert to dictionary
-    # 5. Close the session
-    # 6. Return the result
+    # 1. Check if movie is None
+    # 2. Convert to dictionary
+    # 3. Return the result
+
+    finally:
+        session.close()
+
 
     # DEFAULT: Returns None (movie detail page will show error)
     # Complete this challenge to make movie pages work!
@@ -509,19 +507,6 @@ def add_review(movie_id, review):
     - session.add(object) - Add a new object to the session
     - session.commit() - Save all changes to the database
 
-    STEP-BY-STEP HINTS:
-    -------------------
-    1. Create a session: session = get_session()
-    2. Create a Review object:
-       new_review = Review(
-           movie_id=movie_id,
-           reviewer_name=review["name"],
-           rating=review["rating"],
-           comment=review["comment"]
-       )
-    3. Add to session: session.add(new_review)
-    4. Commit changes: session.commit()
-    5. Close session
 
     Args:
         movie_id (int): The ID of the movie being reviewed
@@ -536,17 +521,13 @@ def add_review(movie_id, review):
     add_review(1, review)
     # This adds a new review for movie with id=1
     """
-    # TODO: Write your code here!
-    # Remember:
-    # 1. Create a session
-    # 2. Create a Review object with the data
-    # 3. Add it to the session
-    # 4. Commit the changes
-    # 5. Close the session
 
-    # DEFAULT: Does nothing (reviews won't be saved)
-    # Complete this challenge to save reviews!
-    pass
+    session = get_session()
+
+    try:
+        # TODO: Write your code here!
+         # Remember:
+         # 1. Create a Review object with the data
 
 
 # ============================================================================
