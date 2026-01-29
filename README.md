@@ -42,6 +42,12 @@ pip install -r requirements.txt
 
 ### 4. Run the app
 
+**Windows (PowerShell/CMD):**
+```bash
+python -m uvicorn main:app --reload
+```
+
+**Mac/Linux:**
 ```bash
 uvicorn main:app --reload
 ```
@@ -79,7 +85,7 @@ Want to share your app with friends? Deploy it for free on Render!
 4. Configure:
    - **Runtime:** Python 3
    - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
+   - **Start Command:** `python -m uvicorn main:app --host 0.0.0.0 --port $PORT`
 5. Click **"Create Web Service"**
 
 Your app will be live at `https://your-app-name.onrender.com`!
