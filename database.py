@@ -530,6 +530,23 @@ def add_review(movie_id, review):
          # 1. Create a Review object with the data
 
 
+
+        new_review = Review(
+            movie_id=movie_id,
+            reviewer_name= "Find field from dictionary" ,
+            rating= "Find field from dictionary",
+           comment= "Find field from dictionary"
+        )
+         # DEFAULT: Does nothing (reviews won't be saved)
+         # Complete this challenge to save reviews!
+        session.add(new_review)
+        session.commit()
+
+    finally:
+      session.close()
+    pass
+
+
 # ============================================================================
 # CHALLENGE 4 - YOUR TURN!
 # Calculate the average rating for a movie
@@ -549,33 +566,6 @@ def get_average_rating(movie_id):
     --------------------
     Calculate the average (mean) of all ratings for a movie.
 
-    TWO WAYS TO DO THIS:
-    --------------------
-
-    METHOD 1 - Using Python (Recommended for beginners):
-    1. Get the movie using get_movie_by_id()
-    2. Get its reviews
-    3. If no reviews, return 0
-    4. Add up all the ratings
-    5. Divide by the number of reviews
-    6. Round to 1 decimal place
-
-    METHOD 2 - Using SQLAlchemy (Advanced):
-    from sqlalchemy import func
-    avg = session.query(func.avg(Review.rating)).filter(Review.movie_id == movie_id).scalar()
-
-    STEP-BY-STEP HINTS (Method 1):
-    ------------------------------
-    1. Get movie: movie = get_movie_by_id(movie_id)
-    2. Check if movie exists: if movie is None: return 0
-    3. Get reviews: reviews = movie.get("reviews", [])
-    4. Check if empty: if len(reviews) == 0: return 0
-    5. Calculate total:
-       total = 0
-       for review in reviews:
-           total = total + review["rating"]
-    6. Calculate average: average = total / len(reviews)
-    7. Return rounded: return round(average, 1)
 
     Args:
         movie_id (int): The ID of the movie
@@ -593,15 +583,26 @@ def get_average_rating(movie_id):
     get_average_rating(2)
     # Returns: 0
     """
-    # TODO: Write your code here!
+
+    movie = get_movie_by_id(movie_id)
+
+    if movie is None:
+        return 0
+
+    reviews = movie.get("reviews", [])
+
+    if len(reviews) == 0:
+       return 0
+
+     # TODO: Write your code here!
     # Remember:
-    # 1. Get the movie using get_movie_by_id()
-    # 2. Check if movie exists
-    # 3. Get the reviews from the movie
-    # 4. Check if there are no reviews (return 0)
-    # 5. Add up all the ratings
-    # 6. Divide by the number of reviews
-    # 7. Round to 1 decimal place
+
+    # 1. Add up all the ratings
+    # 2. Divide by the number of reviews
+    # 3. Round to 1 decimal place
+    # 4. Return final value
+
+    # 5. Delete the below
     return 0
 
 
@@ -625,29 +626,6 @@ def search_movies(query):
     Search for movies where the title contains the search query.
     The search should be case-insensitive (ignore capitals).
 
-    TWO WAYS TO DO THIS:
-    --------------------
-
-    METHOD 1 - Using Python (Recommended for beginners):
-    1. If query is empty, return all movies
-    2. Load all movies
-    3. Filter movies where query is in the title (case-insensitive)
-
-    METHOD 2 - Using SQLAlchemy (Advanced):
-    movies = session.query(Movie).filter(Movie.title.ilike(f"%{query}%")).all()
-    ilike() is case-insensitive LIKE
-
-    STEP-BY-STEP HINTS (Method 1):
-    ------------------------------
-    1. Check if empty query: if query == "": return load_movies()
-    2. Load all movies: movies = load_movies()
-    3. Convert query to lowercase: query_lower = query.lower()
-    4. Create results list: results = []
-    5. Loop through movies:
-       for movie in movies:
-           if query_lower in movie["title"].lower():
-               results.append(movie)
-    6. Return results
 
     Args:
         query (str): The search term to look for in movie titles
@@ -668,10 +646,31 @@ def search_movies(query):
     """
     # TODO: Write your code here!
     # Remember:
-    # 1. Handle empty query (return all movies)
-    # 2. Make search case-insensitive using .lower()
-    # 3. Check if query is IN the title
-    # 4. Return matching movies
+    # 1. Convert search to lowercase
+    # 2. Check if query is IN the title
+    # 3. Return matching movies
+
+    # Handles empty queries
+    if query == "":
+        return load_movies()
+
+    # Gets all movies to match query text against movie titles
+    movies = load_movies()
+
+       # TODO: Write your code here!
+    # Remember:
+    # 1. Convert "query" to lowercase
+    # 2. Check if query is IN the title
+
+    query_lower = #your code here
+    results = []
+
+    # 2. Check if query is IN the title
+    # 3. Return matching movies
+
+
+
+    # 5. Delete the below
     return load_movies()
 
 
@@ -695,18 +694,6 @@ def get_top_rated_movies(limit=5):
     Find movies that have reviews, sort them by rating (highest first),
     and return the top 'limit' movies.
 
-    STEP-BY-STEP HINTS:
-    -------------------
-    1. Get all movies: movies = load_movies()
-    2. Create empty list for rated movies: rated_movies = []
-    3. Loop through movies:
-       for movie in movies:
-           rating = get_average_rating(movie["id"])
-           if rating > 0:  # Only include movies WITH reviews
-               movie["avg_rating"] = rating
-               rated_movies.append(movie)
-    4. Sort by rating (highest first):
-       sorted_movies = sorted(rated_movies, key=lambda m: m["avg_rating"], reverse=True)
 
        WHAT IS LAMBDA?
        ---------------
@@ -714,11 +701,6 @@ def get_top_rated_movies(limit=5):
        "for each movie m, use its avg_rating value for sorting"
 
        reverse=True means highest to lowest (descending order)
-
-    5. Return only the first 'limit' movies:
-       return sorted_movies[:limit]
-
-       The [:limit] is called "slicing" - it takes the first 'limit' items
 
     Args:
         limit (int): How many movies to return (default 5)
@@ -733,13 +715,22 @@ def get_top_rated_movies(limit=5):
     """
     # TODO: Write your code here!
     # Remember:
-    # 1. Get all movies
-    # 2. Calculate average rating for each
-    # 3. Only include movies with reviews (rating > 0)
-    # 4. Sort by rating (highest first)
-    # 5. Return only the first 'limit' movies
-    return []
 
+
+    # Get all movies and create an empty array of rated_movies
+    movies = load_movies()
+    rated_movies = []
+
+    # 1. Populate rated_movies with movies that have reviews
+
+
+    # Sort by rating, highest first
+    sorted_movies = sorted(rated_movies, key=lambda m: m["avg_rating"], reverse=True)
+
+    # 2. Return only the top 'limit' movies
+
+    # 3. Remove the below
+    return []
 
 # ============================================================================
 # CHALLENGE 7 - YOUR TURN! (BONUS)
@@ -761,30 +752,18 @@ def get_movies_by_genre(genre):
     Filter movies to only show those matching the given genre.
     The search should be case-insensitive.
 
-    TWO WAYS TO DO THIS:
-    --------------------
 
-    METHOD 1 - Using Python:
-    1. Load all movies
-    2. If genre is empty, return all movies
-    3. Filter movies where genre matches
-
-    METHOD 2 - Using SQLAlchemy:
-    movies = session.query(Movie).filter(Movie.genre.ilike(genre)).all()
-
-    Args:
-        genre (str): The genre to filter by (e.g., "Action", "Drama")
-
-    Returns:
-        list: Movies that match the genre
-
-    EXAMPLE:
-    --------
-    get_movies_by_genre("Action")
-    # Returns: [{"title": "The Dark Knight", ...}, {"title": "Avengers: Endgame", ...}]
     """
+    # Loads all movies
+    movies = load_movies()
+
     # TODO: Write your code here!
     # This is a BONUS challenge - try it if you finish the others!
+    # 1. Ensure the genre is in lowercase
+
+    # 2. Check each film for it's genre matching the input genre
+
+    # 3. Delete the below
     return load_movies()
 
 
@@ -810,12 +789,6 @@ def count_reviews(movie_id):
     TWO WAYS TO DO THIS:
     --------------------
 
-    METHOD 1 - Using Python:
-    movie = get_movie_by_id(movie_id)
-    return len(movie["reviews"]) if movie else 0
-
-    METHOD 2 - Using SQLAlchemy:
-    count = session.query(Review).filter(Review.movie_id == movie_id).count()
 
     Args:
         movie_id (int): The ID of the movie
@@ -852,15 +825,6 @@ def get_all_genres():
     --------------------
     Return a list of all different genres (no duplicates).
 
-    METHOD 1 - Using Python:
-    1. Load all movies
-    2. Create an empty list for genres
-    3. Loop through movies and collect unique genres
-    4. Sort alphabetically
-
-    METHOD 2 - Using SQLAlchemy:
-    from sqlalchemy import distinct
-    genres = session.query(distinct(Movie.genre)).all()
 
     Args:
         None
@@ -903,13 +867,6 @@ def delete_review(review_id):
     - session.delete(object)
     - session.commit()
 
-    STEP-BY-STEP HINTS:
-    -------------------
-    1. Create a session
-    2. Find the review: review = session.query(Review).filter(Review.id == review_id).first()
-    3. Check if it exists: if review: session.delete(review)
-    4. Commit changes: session.commit()
-    5. Close session
 
     Args:
         review_id (int): The ID of the review to delete
