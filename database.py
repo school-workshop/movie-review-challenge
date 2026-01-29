@@ -662,15 +662,14 @@ def search_movies(query):
     # 1. Convert "query" to lowercase
     # 2. Check if query is IN the title
 
-    query_lower = #your code here
+    query_lower = ""  # TODO: your code here - convert query to lowercase
     results = []
 
+    # TODO: Write your code here!
     # 2. Check if query is IN the title
     # 3. Return matching movies
 
-
-
-    # 5. Delete the below
+    # Delete the below when you complete the challenge
     return load_movies()
 
 
